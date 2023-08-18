@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var selectIndex = 0
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, TCA_B 🤟")
+        TabView {
+            Text("남자")
+                .tabItem {
+                    Text("남자")
+                }
+            Text("여자")
+                .tabItem {
+                    Text("여자")
+                }
         }
-        .padding()
     }
 }
 
