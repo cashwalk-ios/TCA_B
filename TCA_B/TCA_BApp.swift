@@ -11,7 +11,7 @@ import SwiftUI
 struct TCA_BApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }
