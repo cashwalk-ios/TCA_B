@@ -12,8 +12,8 @@ struct MaleView: View {
     let data = Array(1...100).map {"Person \($0)"}
     
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(), spacing: 15),
+        GridItem(.flexible(), spacing: 15)
     ]
     
     var body: some View {
