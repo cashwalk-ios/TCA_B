@@ -31,6 +31,9 @@ struct FemaleView: View {
                         }
                         Spacer()
                     }
+                    .onTapGesture {
+                        print("Clicked \(i)")
+                    }
                 }
             }
         }

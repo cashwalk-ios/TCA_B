@@ -24,16 +24,19 @@ struct HomeView: View {
                     Text("여자").tag(Gender.female)
                 }
                 .pickerStyle(.segmented)
+                .padding(.horizontal)
                 
                 HStack {
                     Spacer()
-                    Text("보기옵션: \(showOption)열")
-                        .padding(.top, 5)
-                        .padding(.trailing, 15.0)
-                        .onTapGesture {
-                            showOption = (showOption == 2) ? 1 : 2
-                            print("보기옵션 클릭 - \(showOption)열")
-                        }
+                    ShowOptionMenuView(showOption: $showOption)
+
+//                    Text("보기옵션: \(showOption)열")
+//                        .padding(.top, 5)
+//                        .padding(.trailing, 15.0)
+//                        .onTapGesture {
+//                            showOption = (showOption == 2) ? 1 : 2
+//                            print("보기옵션 클릭 - \(showOption)열")
+//                        }
                 }
                 
                 TabView(selection: $selectGender) {
@@ -52,5 +55,20 @@ struct HomeView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+    }
+}
+
+struct ShowOptionMenuView: View {
+    @Binding var showOption: Int
+    
+    var body: some View {
+        Menu {
+            Button("1열", action: { showOption = 1 })
+            Button("2열", action: { showOption = 2 })
+        } label: {
+            Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
+        }
+        .padding([.top, .bottom], 5)
+        .padding(.trailing, 15.0)
     }
 }

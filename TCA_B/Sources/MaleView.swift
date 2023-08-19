@@ -37,6 +37,9 @@ struct MaleView: View {
                                 .lineLimit(1)
                         }
                     }
+                    .onTapGesture {
+                        print("Clicked \(i)")
+                    }
                 }
             }
         }

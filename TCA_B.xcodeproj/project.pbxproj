@@ -38,6 +38,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F50D48F2A90967F000C2214 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				47F024CF2A8213D90058B5F4 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0F50D4902A90968B000C2214 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				47F024CD2A8213D70058B5F4 /* HomeView.swift */,
+				0F50D48B2A908D33000C2214 /* MaleView.swift */,
+				0F50D48D2A908D3C000C2214 /* FemaleView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		47F024BF2A8213D70058B5F4 = {
 			isa = PBXGroup;
 			children = (
@@ -58,11 +76,9 @@
 			isa = PBXGroup;
 			children = (
 				47F024CB2A8213D70058B5F4 /* TCA_BApp.swift */,
-				47F024CD2A8213D70058B5F4 /* HomeView.swift */,
-				47F024CF2A8213D90058B5F4 /* Assets.xcassets */,
+				0F50D4902A90968B000C2214 /* Sources */,
+				0F50D48F2A90967F000C2214 /* Resources */,
 				47F024D12A8213D90058B5F4 /* Preview Content */,
-				0F50D48B2A908D33000C2214 /* MaleView.swift */,
-				0F50D48D2A908D3C000C2214 /* FemaleView.swift */,
 			);
 			path = TCA_B;
 			sourceTree = "<group>";
