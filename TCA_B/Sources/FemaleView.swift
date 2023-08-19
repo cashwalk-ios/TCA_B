@@ -27,7 +27,7 @@ struct FemaleView: View {
                         VStack(alignment: .leading, spacing: 5) {
                             Text(i).font(.title)
                             Text("Country").font(.body)
-                            Text("kim.kwangrok@cashwalk.io").font(.body)
+                            Text(verbatim: "kim.kwangrok@cashwalk.io").font(.body)
                         }
                         Spacer()
                     }

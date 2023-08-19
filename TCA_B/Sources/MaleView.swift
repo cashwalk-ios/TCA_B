@@ -32,7 +32,7 @@ struct MaleView: View {
                             Text("Country")
                                 .font(.body)
                                 .lineLimit(1)
-                            Text("kim.kwangrok@cashwalk.io")
+                            Text(verbatim: "kim.kwangrok@cashwalk.io")
                                 .font(.body)
                                 .lineLimit(1)
                         }
