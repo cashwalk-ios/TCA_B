@@ -13,13 +13,13 @@ enum Gender: Int {
 }
 
 struct HomeView: View {
-    @State var selectGender = Gender.male
+    @State var selectedGender = Gender.male
     @State var showOption = 2
     
     var body: some View {
         NavigationView {
             VStack {
-                Picker("성별", selection: $selectGender) {
+                Picker("성별", selection: $selectedGender) {
                     Text("남자").tag(Gender.male)
                     Text("여자").tag(Gender.female)
                 }
@@ -39,7 +39,7 @@ struct HomeView: View {
 //                        }
                 }
                 
-                TabView(selection: $selectGender) {
+                TabView(selection: $selectedGender) {
                     MaleView().tag(Gender.male)
                     FemaleView().tag(Gender.female)
                 }.tabViewStyle(.page(indexDisplayMode: .never))
