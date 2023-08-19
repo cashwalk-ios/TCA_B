@@ -79,6 +79,7 @@ struct MaleView: View {
         } else {
             Text("Invalid showOption value")
         }
+        
     }
 }
 
