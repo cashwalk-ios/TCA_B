@@ -40,10 +40,10 @@ struct HomeView: View {
                 }
                 
                 TabView(selection: $selectedGender) {
-                    MaleView().tag(Gender.male)
-                    FemaleView().tag(Gender.female)
+                    MaleView(showOption: $showOption).tag(Gender.male)
+                    FemaleView(showOption: $showOption).tag(Gender.female)
                 }.tabViewStyle(.page(indexDisplayMode: .never))
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 30)
                 
             }
             .navigationBarTitle("랜덤 프로필", displayMode: .inline)

@@ -9,36 +9,76 @@ import SwiftUI
 
 struct FemaleView: View {
     
-    let data = Array(1...100).map {"Person \($0)"}
+    @Binding var showOption: Int
     
-    let columns = [
-        GridItem(.flexible())
-    ]
+    let data = Array(1...100).map { "Person \($0)" }
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(data, id: \.self) { i in
-                    HStack(alignment: .top) {
-                        Rectangle()
-                            .fill(Color.blue)
-                            .frame(width: 100, height: 100)
-                            .cornerRadius(20)
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(i).font(.title)
-                            Text("Country").font(.body)
-                            Text(verbatim: "kim.kwangrok@cashwalk.io").font(.body)
+        if showOption == 2 {
+            let columns = [
+                GridItem(.flexible(), spacing: 15),
+                GridItem(.flexible(), spacing: 15)
+            ]
+            
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(data, id: \.self) { i in
+                        VStack(alignment: .leading) {
+                            Rectangle()
+                                .fill(Color.yellow)
+                                .frame(height: 200)
+                                .cornerRadius(20)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(i)
+                                    .font(.title)
+                                    .lineLimit(1)
+                                Text("Country")
+                                    .font(.body)
+                                    .lineLimit(1)
+                                Text(verbatim: "kim.kwangrok@cashwalk.io")
+                                    .font(.body)
+                                    .lineLimit(1)
+                            }
                         }
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        print("Clicked \(i)")
+                        .onTapGesture {
+                            print("Clicked \(i)")
+                        }
                     }
                 }
             }
+            .scrollIndicators(.hidden)
+            .padding(.horizontal, 8)
+        } else if showOption == 1 {
+            let columns = [
+                GridItem(.flexible())
+            ]
+            
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(data, id: \.self) { i in
+                        HStack(alignment: .top) {
+                            Rectangle()
+                                .fill(Color.blue)
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(20)
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(i).font(.title)
+                                Text("Country").font(.body)
+                                Text(verbatim: "kim.kwangrok@cashwalk.io").font(.body)
+                            }
+                            Spacer()
+                        }
+                        .onTapGesture {
+                            print("Clicked \(i)")
+                        }
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+            .padding(.horizontal, 8)
+        } else {
+            Text("Invalid showOption value")
         }
-        .scrollIndicators(.hidden)
-        .padding(.horizontal, 8)
     }
 }
 
