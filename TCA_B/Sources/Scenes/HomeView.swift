@@ -12,9 +12,14 @@ enum Gender: Int {
     case female
 }
 
+enum ShowOption: Int {
+    case first = 1
+    case second = 2
+}
+
 struct HomeView: View {
     @State var selectedGender = Gender.male
-    @State var showOption = 2
+    @State var showOption: ShowOption = .second
     
     var body: some View {
         NavigationView {
@@ -31,29 +36,20 @@ struct HomeView: View {
                     
                     Menu {
                         Button {
-                            showOption = 1
+                            showOption = .first
                         } label: {
                             Label("1열", systemImage: "list.dash")
                         }
                         Button {
-                            showOption = 2
+                            showOption = .second
                         } label: {
                             Label("2열", systemImage: "text.below.photo")
                         }
                     } label: {
-                        Label("보기옵션: \(showOption)열", systemImage: showOption == 2 ? "text.below.photo" : "list.dash")
+                        Label("보기옵션: \(showOption.rawValue)열", systemImage: showOption == .second ? "text.below.photo" : "list.dash")
                     }
                     .padding([.top, .bottom], 5)
                     .padding(.trailing, 15.0)
-
-//                    Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
-//                        .foregroundColor(.accentColor)
-//                        .padding(.top, 5)
-//                        .padding(.trailing, 15.0)
-//                        .onTapGesture {
-//                            showOption = (showOption == 2) ? 1 : 2
-//                            print("보기옵션 클릭 - \(showOption)열")
-//                        }
                 }
                 
                 TabView(selection: $selectedGender) {
