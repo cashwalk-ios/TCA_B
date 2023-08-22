@@ -46,6 +46,9 @@ struct FemaleView: View {
                     }
                 }
             }
+            .refreshable {
+                print("Refetch data...")
+            }
             .scrollIndicators(.hidden)
             .padding(.horizontal, 8)
         } else if showOption == 1 {
@@ -79,6 +82,9 @@ struct FemaleView: View {
                         }
                     }
                 }
+            }
+            .refreshable {
+                print("Refetch data...")
             }
             .scrollIndicators(.hidden)
             .padding(.horizontal, 8)
