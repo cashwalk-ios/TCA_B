@@ -1,5 +1,5 @@
 //
-//  MaleView.swift
+//  FemaleView.swift
 //  TCA_B
 //
 //  Created by 김광록 on 2023/08/19.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MaleView: View {
+struct FemaleView: View {
     
     @Binding var showOption: Int
     
@@ -62,9 +62,15 @@ struct MaleView: View {
                                 .frame(width: 100, height: 100)
                                 .cornerRadius(20)
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(i).font(.title)
-                                Text("Country").font(.body)
-                                Text(verbatim: "kim.kwangrok@cashwalk.io").font(.body)
+                                Text(i)
+                                    .font(.title)
+                                    .lineLimit(1)
+                                Text("Country")
+                                    .font(.body)
+                                    .lineLimit(1)
+                                Text(verbatim: "kim.kwangrok@cashwalk.io")
+                                    .font(.body)
+                                    .lineLimit(1)
                             }
                             Spacer()
                         }
@@ -79,12 +85,10 @@ struct MaleView: View {
         } else {
             Text("Invalid showOption value")
         }
-        
     }
 }
 
-
-struct MaleView_Previews: PreviewProvider {
+struct FemaleView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
     }

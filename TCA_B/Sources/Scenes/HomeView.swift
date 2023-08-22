@@ -44,8 +44,10 @@ struct HomeView: View {
                     FemaleView(showOption: $showOption).tag(Gender.female)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
+                .overlay(alignment: .bottom, content: {
+                    GradationView()
+                })
                 .padding(.bottom, 30)
-                
             }
             .navigationBarTitle("랜덤 프로필", displayMode: .inline)
             
