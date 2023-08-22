@@ -28,15 +28,32 @@ struct HomeView: View {
                 
                 HStack {
                     Spacer()
-
-                    Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
-                        .foregroundColor(.accentColor)
-                        .padding(.top, 5)
-                        .padding(.trailing, 15.0)
-                        .onTapGesture {
-                            showOption = (showOption == 2) ? 1 : 2
-                            print("보기옵션 클릭 - \(showOption)열")
+                    
+                    Menu {
+                        Button {
+                            showOption = 1
+                        } label: {
+                            Label("1열", systemImage: "list.dash")
                         }
+                        Button {
+                            showOption = 2
+                        } label: {
+                            Label("2열", systemImage: "text.below.photo")
+                        }
+                    } label: {
+                        Label("보기옵션: \(showOption)열", systemImage: showOption == 2 ? "text.below.photo" : "list.dash")
+                    }
+                    .padding([.top, .bottom], 5)
+                    .padding(.trailing, 15.0)
+
+//                    Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
+//                        .foregroundColor(.accentColor)
+//                        .padding(.top, 5)
+//                        .padding(.trailing, 15.0)
+//                        .onTapGesture {
+//                            showOption = (showOption == 2) ? 1 : 2
+//                            print("보기옵션 클릭 - \(showOption)열")
+//                        }
                 }
                 
                 TabView(selection: $selectedGender) {
