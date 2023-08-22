@@ -53,8 +53,8 @@ struct HomeView: View {
                 }
                 
                 TabView(selection: $selectedGender) {
-                    MaleView(showOption: $showOption).tag(Gender.male)
-                    FemaleView(showOption: $showOption).tag(Gender.female)
+                    ListView(showOption: $showOption).tag(Gender.male)
+                    ListView(showOption: $showOption).tag(Gender.female)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .overlay(alignment: .bottom, content: {

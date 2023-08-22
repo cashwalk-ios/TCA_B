@@ -1,5 +1,5 @@
 //
-//  FemaleView.swift
+//  ListView.swift
 //  TCA_B
 //
 //  Created by 김광록 on 2023/08/19.
@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct FemaleView: View {
+struct ListView: View {
     
-    @Binding var showOption: Int
-    
-    let data = Array(1...100).map { "Person \($0)" }
+    @Binding var showOption: ShowOption
+    @State private var data = Array(1...100).map { "Person \($0)" }
+    @State private var showAlert = false
+    @State private var selectedPerson = ""
     
     var body: some View {
-        if showOption == 2 {
+        if showOption == .second {
             let columns = [
                 GridItem(.flexible(), spacing: 15),
                 GridItem(.flexible(), spacing: 15)
@@ -43,6 +44,25 @@ struct FemaleView: View {
                         .onTapGesture {
                             print("Clicked \(i)")
                         }
+                        .onLongPressGesture {
+                            if data.firstIndex(where: { $0 == i }) != nil {
+                                selectedPerson = i
+                                showAlert = true
+                            }
+                        }
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text(""),
+                                message: Text("\(selectedPerson)를 삭제할까요?"),
+                                primaryButton: .destructive(Text("삭제")) {
+                                    if let index = data.firstIndex(where: { $0 == selectedPerson }) {
+                                        data.remove(at: index)
+                                    }
+                                },
+                                secondaryButton: .cancel(Text("취소"))
+                            )
+                        }
+                        
                     }
                 }
             }
@@ -51,7 +71,7 @@ struct FemaleView: View {
             }
             .scrollIndicators(.hidden)
             .padding(.horizontal, 8)
-        } else if showOption == 1 {
+        } else if showOption == .first {
             let columns = [
                 GridItem(.flexible())
             ]
@@ -80,6 +100,24 @@ struct FemaleView: View {
                         .onTapGesture {
                             print("Clicked \(i)")
                         }
+                        .onLongPressGesture {
+                            if data.firstIndex(where: { $0 == i }) != nil {
+                                selectedPerson = i
+                                showAlert = true
+                            }
+                        }
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text(""),
+                                message: Text("\(selectedPerson)를 삭제할까요?"),
+                                primaryButton: .destructive(Text("삭제")) {
+                                    if let index = data.firstIndex(where: { $0 == selectedPerson }) {
+                                        data.remove(at: index)
+                                    }
+                                },
+                                secondaryButton: .cancel(Text("취소"))
+                            )
+                        }
                     }
                 }
             }
@@ -91,11 +129,20 @@ struct FemaleView: View {
         } else {
             Text("Invalid showOption value")
         }
+        
     }
 }
 
-struct FemaleView_Previews: PreviewProvider {
+struct ListView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+    }
+}
+
+struct DetailView: View {
+    var body: some View {
+        VStack {
+            Text("Detail View")
+        }
     }
 }
