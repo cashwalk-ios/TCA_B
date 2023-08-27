@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Gender: Int {
+enum Gender: String {
     case male
     case female
 }
