@@ -7,52 +7,35 @@
   
 import Foundation
 
-public enum ViewType: String {
-    case female = "여자"
-    case male = "남자"
-
-//    public func convertGender() -> Gender {
-//        switch self {
-//            case .female:
-//                return .female
-//            case .male:
-//                return .male
-//        }
-//    }
+public enum ViewType: String, Sendable {
+    case female
+    case male
 }
-
-//public enum Gender: String, Codable {
-//    case female
-//    case male
-//}
-
+ 
 public enum CellType: Equatable {
     case one
     case two
 }
-struct UserDataModel: Codable, Equatable {
+
+public struct UserDataModel: Codable, Equatable, Sendable  {
     let results: [ResultModel]
     let info: InfoModel
 }
 
-struct InfoModel: Codable, Equatable {
+struct InfoModel: Codable, Equatable, Sendable  {
     let seed: String
     let results: Int
     let page: Int
     let version: String
 }
 
-public struct ResultModel: Codable, Equatable, Identifiable, Hashable {
-    public static func == (lhs: ResultModel, rhs: ResultModel) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    struct NameModel: Codable, Equatable {
+public struct ResultModel: Codable, Equatable, Sendable  {
+    struct NameModel: Codable, Equatable, Sendable  {
         let title: String
         let first: String
         let last: String
     }
-    struct LocationModel: Codable, Equatable {
+    struct LocationModel: Codable, Equatable, Sendable  {
         let street: StreetModel
         let city: String
         let state: String
@@ -61,21 +44,21 @@ public struct ResultModel: Codable, Equatable, Identifiable, Hashable {
 //        let coordinates: CoordinatesModel
 //        let timezone: TimezoneModel
     }
-    struct StreetModel: Codable, Equatable {
+    struct StreetModel: Codable, Equatable, Sendable  {
         let number: Int
         let name: String
     }
     
-    struct CoordinatesModel: Codable, Equatable {
+    struct CoordinatesModel: Codable, Equatable, Sendable  {
         
         let latitude: String
         let longitude: String
     }
-    struct TimezoneModel: Codable, Equatable {
+    struct TimezoneModel: Codable, Equatable, Sendable  {
         let offset: String
         let description: String
     }
-    struct LoginModel: Codable, Equatable {
+    struct LoginModel: Codable, Equatable, Sendable  {
         let uuid: String
         let username: String
         let password: String
@@ -84,26 +67,25 @@ public struct ResultModel: Codable, Equatable, Identifiable, Hashable {
         let sha1: String
         let sha256: String
     }
-    struct DobModel: Codable, Equatable {
+    struct DobModel: Codable, Equatable, Sendable  {
         let date: String
         let age: Int
     }
-    struct RegisteredModel: Codable, Equatable {
+    struct RegisteredModel: Codable, Equatable, Sendable  {
         let date: String
         let age: Int
     }
-    struct IdModel: Codable, Equatable {
+    struct IdModel: Codable, Equatable, Sendable  {
         let name: String
         let value: String?
     }
     
-    struct PictureModel: Codable, Equatable {
+    struct PictureModel: Codable, Equatable, Sendable  {
         let large: String
         let medium: String
         let thumbnail: String
     }
-    
-    public let id: String
+     
     let gender: String
     let name: NameModel
     let location: LocationModel
@@ -113,7 +95,7 @@ public struct ResultModel: Codable, Equatable, Identifiable, Hashable {
     let registered: RegisteredModel
     let phone: String
     let cell: String
-    let idModel: IdModel
+    let id: IdModel
     let picture: PictureModel
     let nat: String
     

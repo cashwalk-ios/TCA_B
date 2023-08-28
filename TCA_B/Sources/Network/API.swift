@@ -53,16 +53,17 @@ class RandomUserService {
     let provider = MoyaProvider<RandomUser>()
     
     init() {}
-    
-    
     func getUsers(gender: String = "male", results: Int = 1, page: Int = 1) -> AnyPublisher<UserDataModel, Error> {
         
         return provider.requestPublisher(.getUsers(gender, results, page))
             .tryMap { response in
+                print("response.data = \(String(decoding: response.data, as: UTF8.self))")
                 let data = try JSONDecoder().decode(UserDataModel.self, from: response.data)
+                print("data = \(data)")
                 return data
             }
             .mapError { error in
+                print("error = \(error.localizedDescription)")
                 return error
             }
             .eraseToAnyPublisher()

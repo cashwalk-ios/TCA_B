@@ -10,16 +10,12 @@ import ComposableArchitecture
 
 struct ListView: View {
     let store: StoreOf<ListViewStore>
-    @Binding var cellType: CellType
+    var cellType: CellType = .two
     @State var personList: [ResultModel] = []
-    
-    public init(store: StoreOf<ListViewStore>) {
-        self.store = store
-    }
+     
     
     var body: some View {
-        WithViewStore(self.store, observe: {$0}) { viewstore in
-            
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             if cellType == .two {
                 let columns = [
                     GridItem(.flexible(), spacing: 15),
@@ -27,30 +23,36 @@ struct ListView: View {
                 ]
                 
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(viewstore.males, id: \.self) { person in
-                            VStack(alignment: .leading) {
-                                Rectangle()
-                                    .fill(Color.yellow)
-                                    .frame(height: 200)
-                                    .cornerRadius(20)
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(person.name.title)
-                                        .font(.title)
-                                        .lineLimit(1)
-                                    Text(person.location.country)
-                                        .font(.body)
-                                        .lineLimit(1)
-                                    Text(verbatim: person.email)
-                                        .font(.body)
-                                        .lineLimit(1)
+                    LazyVStack(alignment: .center, spacing: 10) {
+                        Button("버튼") {
+                            viewStore.send(.clickMale)
+                        }
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(viewStore.males,id: \.login.uuid) { person in
+                                VStack(alignment: .leading) {
+                                    Rectangle()
+                                        .fill(Color.yellow)
+                                        .frame(height: 200)
+                                        .cornerRadius(20)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(person.name.title)
+                                            .font(.title)
+                                            .lineLimit(1)
+                                        Text(person.location.country)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                        Text(verbatim: person.email)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                    }
                                 }
-                            }
-                            .onTapGesture {
-                                print("Clicked \(person)")
+                                .onTapGesture {
+                                    print("Clicked \(person)")
+                                }
                             }
                         }
                     }
+                    
                 }
                 .refreshable {
                     print("Refetch data...")
@@ -64,7 +66,7 @@ struct ListView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(personList, id: \.self) { person in
+                        ForEach(viewStore.males, id: \.login.uuid) { person in
                             HStack(alignment: .top) {
                                 Rectangle()
                                     .fill(Color.blue)
@@ -104,8 +106,8 @@ struct ListView: View {
 }
 
 
-//struct ListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView()
-//    }
-//}
+struct ListView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView()
+    }
+}
