@@ -17,9 +17,9 @@ class ImageLoader: ObservableObject {
     private var cache: ImageCache?
     
     init(url: URL, cache: ImageCache? = nil) {
-            self.url = url
-            self.cache = cache
-        }
+        self.url = url
+        self.cache = cache
+    }
     
     deinit {
         cancel()
@@ -27,21 +27,21 @@ class ImageLoader: ObservableObject {
     
     func load() {
         if let image = cache?[url] {
-                    self.image = image
-                    return
-                }
-                
-                cancellable = URLSession.shared.dataTaskPublisher(for: url)
-                    .map { UIImage(data: $0.data) }
-                    .replaceError(with: nil)
-                    .handleEvents(receiveOutput: { [weak self] in self?.cache($0) })
-                    .receive(on: DispatchQueue.main)
-                    .sink { [weak self] in self?.image = $0 }
+            self.image = image
+            return
+        }
+        
+        cancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { UIImage(data: $0.data) }
+            .replaceError(with: nil)
+            .handleEvents(receiveOutput: { [weak self] in self?.cache($0) })
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.image = $0 }
     }
     
     private func cache(_ image: UIImage?) {
-            image.map { cache?[url] = $0 }
-        }
+        image.map { cache?[url] = $0 }
+    }
     
     func cancel() {
         cancellable?.cancel()
@@ -53,9 +53,9 @@ struct AsyncImage<Placeholder: View>: View {
     private let placeholder: Placeholder
     
     init(url: URL, @ViewBuilder placeholder: () -> Placeholder) {
-            self.placeholder = placeholder()
-            _loader = StateObject(wrappedValue: ImageLoader(url: url, cache: Environment(\.imageCache).wrappedValue))
-        }
+        self.placeholder = placeholder()
+        _loader = StateObject(wrappedValue: ImageLoader(url: url, cache: Environment(\.imageCache).wrappedValue))
+    }
     
     var body: some View {
         content
@@ -64,13 +64,13 @@ struct AsyncImage<Placeholder: View>: View {
     
     private var content: some View {
         Group {
-                    if loader.image != nil {
-                        Image(uiImage: loader.image!)
-                            .resizable()
-                    } else {
-                        placeholder
-                    }
-                }
+            if loader.image != nil {
+                Image(uiImage: loader.image!)
+                    .resizable()
+            } else {
+                placeholder
+            }
+        }
     }
 }
 
