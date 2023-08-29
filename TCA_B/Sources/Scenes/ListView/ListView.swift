@@ -10,19 +10,20 @@ import ComposableArchitecture
 
 struct ListView: View {
     let store: StoreOf<ListViewStore>
-    var cellType: CellType = .two
+    var showOption: ShowOption = .second
     @State private var showAlert = false
     @State private var selectedPerson = ""
     var gender: Gender = .male
      
-    public init(store: StoreOf<ListViewStore>, cellType: CellType, gender: Gender) {
+    public init(store: StoreOf<ListViewStore>, showOption: ShowOption, gender: Gender) {
         self.store = store
-        self.cellType = cellType
+        self.showOption = showOption
         self.gender = gender
     }
+    
     var body: some View {
         WithViewStore(self.store, observe: {$0}) { viewStore in
-            if cellType == .two {
+            if showOption == .second {
                 let columns = [
                     GridItem(.flexible(), spacing: 15),
                     GridItem(.flexible(), spacing: 15)
@@ -136,7 +137,7 @@ struct ListView: View {
                 }
                 .scrollIndicators(.hidden)
                 .padding(.horizontal, 8)
-            } else if cellType == .one {
+            } else if showOption == .first {
                 let columns = [
                     GridItem(.flexible())
                 ]
@@ -209,10 +210,10 @@ struct ListView: View {
 }
 
 
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
-            ListViewStore()
-        }), cellType: .one, gender: .female)
-    }
-}
+//struct ListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
+//            ListViewStore()
+//        }), showOption: .first, gender: .female)
+//    }
+//}
