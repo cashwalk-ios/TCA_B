@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0F0D668C2A8F36C100E1ED77 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0F0D668B2A8F36C100E1ED77 /* ComposableArchitecture */; };
 		0F50D48E2A908D3C000C2214 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50D48D2A908D3C000C2214 /* ListView.swift */; };
+		0F95B25F2A9D78BA00488011 /* HomeViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F95B25E2A9D78BA00488011 /* HomeViewStore.swift */; };
 		0FF7C71C2A91EF3300BFC33D /* GradationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF7C71B2A91EF3300BFC33D /* GradationView.swift */; };
 		47F024CC2A8213D70058B5F4 /* TCA_BApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F024CB2A8213D70058B5F4 /* TCA_BApp.swift */; };
 		47F024CE2A8213D70058B5F4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F024CD2A8213D70058B5F4 /* HomeView.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		0F50D48D2A908D3C000C2214 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		0F95B25E2A9D78BA00488011 /* HomeViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewStore.swift; sourceTree = "<group>"; };
 		0FF7C71B2A91EF3300BFC33D /* GradationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradationView.swift; sourceTree = "<group>"; };
 		47F024C82A8213D70058B5F4 /* TCA_B.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCA_B.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F024CB2A8213D70058B5F4 /* TCA_BApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCA_BApp.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				47F024CD2A8213D70058B5F4 /* HomeView.swift */,
+				0F95B25E2A9D78BA00488011 /* HomeViewStore.swift */,
 				0F50D48D2A908D3C000C2214 /* ListView.swift */,
 			);
 			path = Scenes;
@@ -193,6 +196,7 @@
 			files = (
 				0F50D48E2A908D3C000C2214 /* ListView.swift in Sources */,
 				0FF7C71C2A91EF3300BFC33D /* GradationView.swift in Sources */,
+				0F95B25F2A9D78BA00488011 /* HomeViewStore.swift in Sources */,
 				47F024CE2A8213D70058B5F4 /* HomeView.swift in Sources */,
 				47F024CC2A8213D70058B5F4 /* TCA_BApp.swift in Sources */,
 			);

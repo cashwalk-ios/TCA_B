@@ -133,12 +133,6 @@ struct ListView: View {
     }
 }
 
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
-
 struct DetailView: View {
     var body: some View {
         VStack {

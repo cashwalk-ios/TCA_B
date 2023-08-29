@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
-enum Gender: Int {
-    case male
-    case female
+extension HomeViewStore.State: Equatable {
+    static func == (lhs: HomeViewStore.State, rhs: HomeViewStore.State) -> Bool {
+        return true
+    }
 }
 
 enum ShowOption: Int {
@@ -18,58 +20,56 @@ enum ShowOption: Int {
 }
 
 struct HomeView: View {
-    @State var selectedGender = Gender.male
+    let store: StoreOf<HomeViewStore>
+    
+//    @State var selectedGender = GenderTab.male
     @State var showOption: ShowOption = .second
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Picker("성별", selection: $selectedGender) {
-                    Text("남자").tag(Gender.male)
-                    Text("여자").tag(Gender.female)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                
-                HStack {
-                    Spacer()
-                    
-                    Menu {
-                        Button {
-                            showOption = .first
-                        } label: {
-                            Label("1열", systemImage: "list.dash")
-                        }
-                        Button {
-                            showOption = .second
-                        } label: {
-                            Label("2열", systemImage: "text.below.photo")
-                        }
-                    } label: {
-                        Label("보기옵션: \(showOption.rawValue)열", systemImage: showOption == .second ? "text.below.photo" : "list.dash")
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            NavigationView {
+                VStack {
+                    Picker("성별", selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
+                        Text("남자").tag(GenderTab.male)
+                        Text("여자").tag(GenderTab.female)
                     }
-                    .padding([.top, .bottom], 5)
-                    .padding(.trailing, 15.0)
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Menu {
+                            Button {
+                                viewStore.send(.showOptionTapped(.first))
+                            } label: {
+                                Label("1열", systemImage: "list.dash")
+                            }
+                            Button {
+                                viewStore.send(.showOptionTapped(.second))
+                            } label: {
+                                Label("2열", systemImage: "text.below.photo")
+                            }
+                        } label: {
+                            Label("보기옵션: \(viewStore.showOption.rawValue)열", systemImage: viewStore.showOption == .second ? "text.below.photo" : "list.dash")
+                        }
+                        .padding(.vertical, 5)
+                        .padding(.trailing, 15.0)
+                    }
+                    
+                    TabView(selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
+                        ListView(showOption: $showOption).tag(GenderTab.male)
+                        ListView(showOption: $showOption).tag(GenderTab.female)
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .overlay(alignment: .bottom, content: {
+                        GradationView()
+                    })
+                    .padding(.bottom, 30)
                 }
+                .navigationBarTitle("랜덤 프로필", displayMode: .inline)
                 
-                TabView(selection: $selectedGender) {
-                    ListView(showOption: $showOption).tag(Gender.male)
-                    ListView(showOption: $showOption).tag(Gender.female)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .overlay(alignment: .bottom, content: {
-                    GradationView()
-                })
-                .padding(.bottom, 30)
             }
-            .navigationBarTitle("랜덤 프로필", displayMode: .inline)
-            
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
     }
 }
