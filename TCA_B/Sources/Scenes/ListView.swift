@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ListView: View {
     
     @Binding var showOption: Int
+    
+    let store: StoreOf<ListViewStore>
+    
     
     let data = Array(1...100).map { "Person \($0)" }
     
@@ -46,8 +50,10 @@ struct ListView: View {
                     }
                 }
             }
+            .onAppear()
             .refreshable {
                 print("Refetch data...")
+                self.store.send(.onAppear)
             }
             .scrollIndicators(.hidden)
             .padding(.horizontal, 8)

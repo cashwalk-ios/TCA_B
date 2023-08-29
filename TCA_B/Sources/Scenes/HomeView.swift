@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
-enum Gender: Int {
+enum Gender: Int, Decodable {
     case male
     case female
 }
@@ -57,8 +58,8 @@ struct HomeView: View {
                 }
                 
                 TabView(selection: $selectedGender) {
-                    ListView(showOption: $showOption).tag(Gender.male)
-                    ListView(showOption: $showOption).tag(Gender.female)
+                    ListView(showOption: $showOption, store: Store(initialState: ListViewStore.State(), reducer: type(of: ListViewStore()).init)).tag(Gender.male)
+                    ListView(showOption: $showOption, store: Store(initialState: ListViewStore.State(), reducer: type(of: ListViewStore()).init)).tag(Gender.female)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .overlay(alignment: .bottom, content: {
