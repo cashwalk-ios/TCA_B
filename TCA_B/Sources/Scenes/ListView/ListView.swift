@@ -11,6 +11,8 @@ import ComposableArchitecture
 struct ListView: View {
     let store: StoreOf<ListViewStore>
     var cellType: CellType = .two
+    @State private var showAlert = false
+    @State private var selectedPerson = ""
     var gender: Gender = .male
      
     public init(store: StoreOf<ListViewStore>, cellType: CellType, gender: Gender) {
@@ -38,7 +40,7 @@ struct ListView: View {
                         
                         LazyVGrid(columns: columns, spacing: 20) {
                             if gender == .male {
-                                ForEach(viewStore.males,id: \.login.uuid) { person in
+                                ForEach(viewStore.males, id: \.login.uuid) { person in
                                     VStack(alignment: .leading) {
                                         AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
                                                         .frame(minHeight: 200, maxHeight: 200)
@@ -60,6 +62,25 @@ struct ListView: View {
                                     }
                                     .onTapGesture {
                                         print("Clicked \(person)")
+                                    }
+                                    .onLongPressGesture {
+                                        if viewStore.males.firstIndex(where: { $0 == person }) != nil {
+                                            selectedPerson = person.name.last
+                                            showAlert = true
+                                        }
+                                    }
+                                    .alert(isPresented: $showAlert) {
+                                        Alert(
+                                            title: Text(""),
+                                            message: Text("\(selectedPerson)를 삭제할까요?"),
+                                            primaryButton: .destructive(Text("삭제")) {
+                                                if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                                    // viewStore.males.remove(at: index)
+                                                    // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
+                                                }
+                                            },
+                                            secondaryButton: .cancel(Text("취소"))
+                                        )
                                     }
                                 }
                             } else {
@@ -83,6 +104,25 @@ struct ListView: View {
                                     }
                                     .onTapGesture {
                                         print("Clicked \(person)")
+                                    }
+                                    .onLongPressGesture {
+                                        if viewStore.females.firstIndex(where: { $0 == person }) != nil {
+                                            selectedPerson = person.name.last
+                                            showAlert = true
+                                        }
+                                    }
+                                    .alert(isPresented: $showAlert) {
+                                        Alert(
+                                            title: Text(""),
+                                            message: Text("\(selectedPerson)를 삭제할까요?"),
+                                            primaryButton: .destructive(Text("삭제")) {
+                                                if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                                    // viewStore.males.remove(at: index)
+                                                    // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
+                                                }
+                                            },
+                                            secondaryButton: .cancel(Text("취소"))
+                                        )
                                     }
                                 }
                             }
