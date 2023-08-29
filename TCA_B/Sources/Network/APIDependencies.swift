@@ -36,7 +36,8 @@ extension RandomUserClient: DependencyKey {
             return try await withCheckedThrowingContinuation { continuation in
                 userService.getUsers(gender: personInfo.gender.rawValue, results: 14, page: personInfo.page)
                     .sink(receiveCompletion: { error in
-                        continuation.resume(returning: [])
+//                        continuation.resume(returning: [])
+                        print("error = \(error)")
                     }, receiveValue: { userList in
                         continuation.resume(returning: userList.results)
                     })

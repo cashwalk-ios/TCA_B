@@ -46,6 +46,11 @@ public struct ListViewStore: Reducer {
                 return .run { send in
                     await send(.getUser(viewType: .male))
                 }
+                
+            case .clickFemale:
+                return .run { send in
+                    await send(.getUser(viewType: .female))
+                }
             case .getUser(let viewType):
                 if viewType == .male {
                     return .run { send in
@@ -57,20 +62,46 @@ public struct ListViewStore: Reducer {
                     }
                 } else {
                     return .run { send in
-                        await send(.getMale(
+                        await send(.getFemale(
                             TaskResult {
                                 try await self.randomUserClient.userList(PersonInfo(gender: .female, page: 1))
                             }
                         ))
                     }
                 }
+            case .moreMale:
+                return .run { [state = state] send in
+                    await send(.addMale(
+                        TaskResult {
+                            try await self.randomUserClient.userList(PersonInfo(gender: .male, page: state.maleCount + 1))
+                        }
+                    ))
+                }
+            case .moreFemale:
+                return .run { [state = state] send in
+                    await send(.addFemale(
+                        TaskResult {
+                            try await self.randomUserClient.userList(PersonInfo(gender: .female, page: state.femaleCount + 1))
+                        }
+                    ))
+                }
             case .getMale(.success(let list)):
                 print("getMale = \(list)")
                 state.males = list
+                state.maleCount = 1
                 return .none
             case .getFemale(.success(let list)):
                 print("getFemale = \(list)")
                 state.females = list
+                state.femaleCount = 1
+                return .none
+            case .addMale(.success(let list)):
+                state.males += list
+                state.maleCount += 1
+                return .none
+            case .addFemale(.success(let list)):
+                state.females += list
+                state.femaleCount += 1
                 return .none
             default:
                 return .none

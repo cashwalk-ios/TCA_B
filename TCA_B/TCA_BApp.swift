@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct TCA_BApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            HomeView(store: Store(initialState: ListViewStore.State(), reducer: {
+                ListViewStore()
+            }))
         }
     }
 }

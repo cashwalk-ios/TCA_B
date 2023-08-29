@@ -94,8 +94,8 @@ struct FemaleView: View {
     }
 }
 
-struct FemaleView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
+//struct FemaleView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView()
+//    }
+//}

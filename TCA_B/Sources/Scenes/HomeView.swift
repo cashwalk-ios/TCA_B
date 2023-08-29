@@ -5,8 +5,9 @@
 //  Created by 이아림 on 2023/08/08.
 //
 
-import ComposableArchitecture
 import SwiftUI
+import ComposableArchitecture
+import Combine
 
 enum Gender: String {
     case male
@@ -14,62 +15,62 @@ enum Gender: String {
 }
 
 struct HomeView: View {
+    
+    let store: StoreOf<ListViewStore>
     @State var selectedGender = Gender.male
     @State var showOption = 2
-     
     
     var body: some View {
         NavigationView {
             VStack {
-                ListView(store: Store(initialState: ListViewStore.State(), reducer: {
-                    ListViewStore()
-                }))
-//                Picker("성별", selection: $selectedGender) {
-//                    Text("남자").tag(Gender.male)
-//                    Text("여자").tag(Gender.female)
-//                }
-//                .pickerStyle(.segmented)
-//                .padding(.horizontal)
-//
-//                HStack {
-//                    Spacer()
-//
-//                    Menu {
-//                        Button {
-//                            showOption = 1
-//                        } label: {
-//                            Label("1열", systemImage: "list.dash")
+                Picker("성별", selection: $selectedGender) {
+                    Text("남자").tag(Gender.male)
+                    Text("여자").tag(Gender.female)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
+                HStack {
+                    Spacer()
+                    
+                    Menu {
+                        Button {
+                            showOption = 1
+                        } label: {
+                            Label("1열", systemImage: "list.dash")
+                        }
+                        Button {
+                            showOption = 2
+                        } label: {
+                            Label("2열", systemImage: "text.below.photo")
+                        }
+                    } label: {
+                        Label("보기옵션: \(showOption)열", systemImage: showOption == 2 ? "text.below.photo" : "list.dash")
+                    }
+                    .padding([.top, .bottom], 5)
+                    .padding(.trailing, 15.0)
+
+//                    Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
+//                        .foregroundColor(.accentColor)
+//                        .padding(.top, 5)
+//                        .padding(.trailing, 15.0)
+//                        .onTapGesture {
+//                            showOption = (showOption == 2) ? 1 : 2
+//                            print("보기옵션 클릭 - \(showOption)열")
 //                        }
-//                        Button {
-//                            showOption = 2
-//                        } label: {
-//                            Label("2열", systemImage: "text.below.photo")
-//                        }
-//                    } label: {
-//                        Label("보기옵션: \(showOption)열", systemImage: showOption == 2 ? "text.below.photo" : "list.dash")
-//                    }
-//                    .padding([.top, .bottom], 5)
-//                    .padding(.trailing, 15.0)
-//
-////                    Label("보기옵션: \(showOption)열", systemImage: "text.below.photo")
-////                        .foregroundColor(.accentColor)
-////                        .padding(.top, 5)
-////                        .padding(.trailing, 15.0)
-////                        .onTapGesture {
-////                            showOption = (showOption == 2) ? 1 : 2
-////                            print("보기옵션 클릭 - \(showOption)열")
-////                        }
-//                }
-//
-//                TabView(selection: $selectedGender) {
+                }
+                
+                TabView(selection: $selectedGender) {
+                    ListView(store: store, cellType: .two, gender: .male).tag(Gender.male)
+                    ListView(store: store, cellType: .two, gender: .female).tag(Gender.female)
 //                    MaleView(showOption: $showOption).tag(Gender.male)
 //                    FemaleView(showOption: $showOption).tag(Gender.female)
-//                }
-//                .tabViewStyle(.page(indexDisplayMode: .never))
-//                .overlay(alignment: .bottom, content: {
-//                    GradationView()
-//                })
-//                .padding(.bottom, 30)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .overlay(alignment: .bottom, content: {
+                    GradationView()
+                })
+                .padding(.bottom, 30)
             }
             .navigationBarTitle("랜덤 프로필", displayMode: .inline)
             
@@ -79,6 +80,8 @@ struct HomeView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(store: Store(initialState: ListViewStore.State(), reducer: {
+            ListViewStore()
+        }))
     }
 }

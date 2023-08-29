@@ -11,9 +11,13 @@ import ComposableArchitecture
 struct ListView: View {
     let store: StoreOf<ListViewStore>
     var cellType: CellType = .two
-    @State var personList: [ResultModel] = []
+    var gender: Gender = .male
      
-    
+    public init(store: StoreOf<ListViewStore>, cellType: CellType, gender: Gender) {
+        self.store = store
+        self.cellType = cellType
+        self.gender = gender
+    }
     var body: some View {
         WithViewStore(self.store, observe: {$0}) { viewStore in
             if cellType == .two {
@@ -24,32 +28,65 @@ struct ListView: View {
                 
                 ScrollView {
                     LazyVStack(alignment: .center, spacing: 10) {
-                        Button("버튼") {
-                            viewStore.send(.clickMale)
+                        
+                        if gender == .male {
+                            Button("남자버튼") {
+                                viewStore.send(.clickMale)}
+                        } else { Button("여자버튼") {
+                            viewStore.send(.clickFemale)}
                         }
+                        
                         LazyVGrid(columns: columns, spacing: 20) {
-                            ForEach(viewStore.males,id: \.login.uuid) { person in
-                                VStack(alignment: .leading) {
-                                    Rectangle()
-                                        .fill(Color.yellow)
-                                        .frame(height: 200)
-                                        .cornerRadius(20)
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(person.name.title)
-                                            .font(.title)
-                                            .lineLimit(1)
-                                        Text(person.location.country)
-                                            .font(.body)
-                                            .lineLimit(1)
-                                        Text(verbatim: person.email)
-                                            .font(.body)
-                                            .lineLimit(1)
+                            if gender == .male {
+                                ForEach(viewStore.males,id: \.login.uuid) { person in
+                                    VStack(alignment: .leading) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                                        .frame(minHeight: 200, maxHeight: 200)
+                                                        .aspectRatio(contentMode: .fill)
+//                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: Text("Loading...")).aspectRatio( contentMode: .fit)
+//                                            .frame(height: 200)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        print("Clicked \(person)")
                                     }
                                 }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
+                            } else {
+                                ForEach(viewStore.females,id: \.login.uuid) { person in
+                                    VStack(alignment: .leading) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                                        .frame(minHeight: 200, maxHeight: 200)
+                                                        .aspectRatio(contentMode: .fill)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        print("Clicked \(person)")
+                                    }
                                 }
                             }
+                           
                         }
                     }
                     
@@ -66,27 +103,53 @@ struct ListView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(viewStore.males, id: \.login.uuid) { person in
-                            HStack(alignment: .top) {
-                                Rectangle()
-                                    .fill(Color.blue)
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(20)
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(person.name.title)
-                                        .font(.title)
-                                        .lineLimit(1)
-                                    Text(person.location.country)
-                                        .font(.body)
-                                        .lineLimit(1)
-                                    Text(verbatim: person.email)
-                                        .font(.body)
-                                        .lineLimit(1)
+                        if gender == .male {
+                            ForEach(viewStore.males, id: \.login.uuid) { person in
+                                HStack(alignment: .top) {
+                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                                    .frame(minHeight: 200, maxHeight: 200)
+                                                    .aspectRatio(contentMode: .fill)
+                                        .cornerRadius(20)
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(person.name.title)
+                                            .font(.title)
+                                            .lineLimit(1)
+                                        Text(person.location.country)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                        Text(verbatim: person.email)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                    }
+                                    Spacer()
                                 }
-                                Spacer()
+                                .onTapGesture {
+                                    print("Clicked \(person)")
+                                }
                             }
-                            .onTapGesture {
-                                print("Clicked \(person)")
+                        } else {
+                            ForEach(viewStore.females, id: \.login.uuid) { person in
+                                HStack(alignment: .top) {
+                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                                    .frame(minHeight: 200, maxHeight: 200)
+                                                    .aspectRatio(contentMode: .fill)
+                                        .cornerRadius(20)
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(person.name.title)
+                                            .font(.title)
+                                            .lineLimit(1)
+                                        Text(person.location.country)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                        Text(verbatim: person.email)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                    }
+                                    Spacer()
+                                }
+                                .onTapGesture {
+                                    print("Clicked \(person)")
+                                }
                             }
                         }
                     }
@@ -108,6 +171,8 @@ struct ListView: View {
 
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
+            ListViewStore()
+        }), cellType: .one, gender: .female)
     }
 }
