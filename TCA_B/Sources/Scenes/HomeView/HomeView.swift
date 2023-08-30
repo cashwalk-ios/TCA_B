@@ -15,14 +15,13 @@ enum ShowOption: Int, Equatable {
 
 struct HomeView: View {
     let store: StoreOf<HomeViewStore>
-//    @State var selectedGender = Gender.male
     @State var showOption: ShowOption = .second
-
+    
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
+        WithViewStore(self.store, observe: \.selectedGender) { viewStore in
             NavigationView {
                 VStack {
-                    Picker("성별", selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
+                    Picker("성별", selection: viewStore.binding(send: HomeViewStore.Action.switchGender)) {
                         Text("남자").tag(Gender.male)
                         Text("여자").tag(Gender.female)
                     }
@@ -44,15 +43,21 @@ struct HomeView: View {
                                 Label("2열", systemImage: "text.below.photo")
                             }
                         } label: {
-                            Label("보기옵션: \(viewStore.showOption.rawValue)열", systemImage: viewStore.showOption == .second ? "text.below.photo" : "list.dash")
+                            self.store.withState { state in
+                                Label("보기옵션: \(state.showOption.rawValue)열", systemImage: state.showOption == .second ? "text.below.photo" : "list.dash")
+                            }
                         }
                         .padding(.vertical, 5)
                         .padding(.trailing, 15.0)
                     }
                     
-                    TabView(selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
-                        ListView(store: Store(initialState: ListViewStore.State(), reducer: ListViewStore()), showOption: .second, gender: .male).tag(Gender.male)
-                        ListView(store: Store(initialState: ListViewStore.State(), reducer: ListViewStore()), showOption: .second, gender: .female).tag(Gender.female)
+                    TabView(selection: viewStore.binding(send: HomeViewStore.Action.switchGender)) {
+                        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
+                            ListViewStore()
+                        }), showOption: .second, gender: .male).tag(Gender.male)
+                        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
+                            ListViewStore()
+                        }), showOption: .second, gender: .female).tag(Gender.female)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .overlay(alignment: .bottom, content: {
@@ -64,6 +69,7 @@ struct HomeView: View {
             }
         }
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

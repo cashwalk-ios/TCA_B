@@ -7,21 +7,23 @@
 
 import ComposableArchitecture
 
-public enum Gender: String, CaseIterable {
+public enum Gender: String, Equatable {
     case male
     case female
 }
 
 struct HomeViewStore: Reducer {
     
-    struct State {
+    struct State: Equatable {
         var showOption: ShowOption = .second
-        var selectedGender: Gender = .male
+        var selectedTab: String = Gender.male.rawValue
+        var selectedGender: Gender = .male  
     }
     
-    enum Action {
+    enum Action: Equatable {
         case showOptionTapped(ShowOption)
         case switchGender(Gender)
+        case switchTab(String)
     }
     
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
@@ -30,6 +32,14 @@ struct HomeViewStore: Reducer {
             state.showOption = showOption
             return .none
             
+        case let .switchTab(gender):
+            if gender == Gender.male.rawValue {
+                state.selectedGender = .male
+            } else {
+                state.selectedGender = .female
+            }
+            return .none
+
         case let .switchGender(gender):
             state.selectedGender = gender
             return .none
