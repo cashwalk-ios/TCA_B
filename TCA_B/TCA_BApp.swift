@@ -16,7 +16,9 @@ struct TCA_BApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView(store: TCA_BApp.store)
+            HomeView(store: TCA_BApp.store, listStore: Store(initialState: ListViewStore.State(), reducer: {
+                ListViewStore()
+            }))
         }
     }
 }

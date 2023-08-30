@@ -15,6 +15,7 @@ enum ShowOption: Int, Equatable {
 
 struct HomeView: View {
     let store: StoreOf<HomeViewStore>
+    let listStore: StoreOf<ListViewStore>
     @State var showOption: ShowOption = .second
     
     var body: some View {
@@ -52,12 +53,8 @@ struct HomeView: View {
                     }
                     
                     TabView(selection: viewStore.binding(send: HomeViewStore.Action.switchGender)) {
-                        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
-                            ListViewStore()
-                        }), showOption: .second, gender: .male).tag(Gender.male)
-                        ListView(store: Store(initialState: ListViewStore.State(), reducer: {
-                            ListViewStore()
-                        }), showOption: .second, gender: .female).tag(Gender.female)
+                        ListView(store: self.listStore, showOption: .second, gender: .male).tag(Gender.male)
+                        ListView(store: self.listStore, showOption: .second, gender: .female).tag(Gender.female)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .overlay(alignment: .bottom, content: {
@@ -76,6 +73,9 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(store: Store(initialState: HomeViewStore.State(), reducer: {
             HomeViewStore()
-        }))
+        }), listStore: Store(initialState: ListViewStore.State(), reducer: {
+            ListViewStore()
+        })
+                 )
     }
 }
