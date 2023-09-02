@@ -51,6 +51,7 @@ public struct ListViewStore: Reducer {
                     await send(.getUser(viewType: .male))
                     await send(.getUser(viewType: .female))
                 }
+                
             case .refreshModelData(let gender):
                 if gender == .male {
                     return .run { send in

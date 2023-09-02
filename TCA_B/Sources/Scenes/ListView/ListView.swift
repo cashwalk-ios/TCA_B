@@ -19,6 +19,7 @@ struct ListView: View {
         self.store = store
         self.showOption = showOption
         self.gender = gender
+//        self.store.send(.initTest)
     }
     
     var body: some View {
@@ -198,6 +199,7 @@ struct ListView: View {
                 }
                 .refreshable {
                     print("Refetch data...")
+                    viewStore.send(.refreshModelData(genderType: gender))
                 }
                 .scrollIndicators(.hidden)
                 .padding(.horizontal, 8)
