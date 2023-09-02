@@ -59,6 +59,9 @@ struct HomeView: View {
                         GradationView()
                     })
                     .padding(.bottom, 30)
+                    .onAppear {
+                        self.listStore.send(.initTest)
+                    }
                 }
                 .navigationBarTitle("랜덤 프로필", displayMode: .inline)
             }
