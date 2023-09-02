@@ -134,6 +134,7 @@ struct ListView: View {
                 }
                 .refreshable {
                     print("Refetch data...")
+                    viewStore.send(.refreshModelData(genderType: gender))
                 }
                 .scrollIndicators(.hidden)
                 .padding(.horizontal, 8)

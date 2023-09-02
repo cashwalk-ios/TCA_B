@@ -37,11 +37,31 @@ public struct ListViewStore: Reducer {
         case addMale(TaskResult<[ResultModel]>)
         case moreFemale
         case addFemale(TaskResult<[ResultModel]>)
+        
+        // TEST
+        case initTest
+        case refreshModelData(genderType: Gender)
     }
     
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .initTest:
+                return .run { send in
+                    await send(.getUser(viewType: .male))
+                    await send(.getUser(viewType: .female))
+                }
+            case .refreshModelData(let gender):
+                if gender == .male {
+                    return .run { send in
+                        await send(.getUser(viewType: .male))
+                    }
+                } else {
+                    return .run { send in
+                        await send(.getUser(viewType: .female))
+                    }
+                }
+                
             case .clickMale:
                 return .run { send in
                     await send(.getUser(viewType: .male))
