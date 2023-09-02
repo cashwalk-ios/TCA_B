@@ -16,13 +16,12 @@ enum ShowOption: Int, Equatable {
 struct HomeView: View {
     let store: StoreOf<HomeViewStore>
     let listStore: StoreOf<ListViewStore>
-    @State var showOption: ShowOption = .second
     
     var body: some View {
-        WithViewStore(self.store, observe: \.selectedGender) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             NavigationView {
                 VStack {
-                    Picker("성별", selection: viewStore.binding(send: HomeViewStore.Action.switchGender)) {
+                    Picker("성별", selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
                         Text("남자").tag(Gender.male)
                         Text("여자").tag(Gender.female)
                     }
@@ -51,10 +50,9 @@ struct HomeView: View {
                         .padding(.vertical, 5)
                         .padding(.trailing, 15.0)
                     }
-                    
-                    TabView(selection: viewStore.binding(send: HomeViewStore.Action.switchGender)) {
-                        ListView(store: self.listStore, showOption: .second, gender: .male).tag(Gender.male)
-                        ListView(store: self.listStore, showOption: .second, gender: .female).tag(Gender.female)
+                    TabView(selection: viewStore.binding(get: \.selectedGender, send: HomeViewStore.Action.switchGender)) {
+                        ListView(store: self.listStore, showOption: viewStore.state.showOption, gender: .male).tag(Gender.male)
+                        ListView(store: self.listStore, showOption: viewStore.state.showOption, gender: .female).tag(Gender.female)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .overlay(alignment: .bottom, content: {
@@ -66,7 +64,6 @@ struct HomeView: View {
             }
         }
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {

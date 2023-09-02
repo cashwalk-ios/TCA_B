@@ -19,7 +19,6 @@ struct ListView: View {
         self.store = store
         self.showOption = showOption
         self.gender = gender
-//        self.store.send(.initTest)
     }
     
     var body: some View {

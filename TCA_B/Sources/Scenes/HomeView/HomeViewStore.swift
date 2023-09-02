@@ -24,26 +24,55 @@ struct HomeViewStore: Reducer {
         case showOptionTapped(ShowOption)
         case switchGender(Gender)
         case switchTab(String)
+        
+        case swotchState(State)
     }
     
-    func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        switch action {
-        case let .showOptionTapped(showOption):
-            state.showOption = showOption
-            return .none
-            
-        case let .switchTab(gender):
-            if gender == Gender.male.rawValue {
+//    func reduce(into state: inout State, action: Action) -> Effect<Action> {
+//        switch action {
+//        case let .showOptionTapped(showOption):
+//            state.showOption = showOption
+//            return .none
+//
+//        case let .switchTab(gender):
+//            if gender == Gender.male.rawValue {
+//                state.selectedGender = .male
+//            } else {
+//                state.selectedGender = .female
+//            }
+//            return .none
+//
+//        case let .switchGender(gender):
+//            state.selectedGender = gender
+//            return .none
+//
+//        }
+//    }
+    
+    public var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .showOptionTapped(let showOption):
+                state.showOption = showOption
+                return .none
+                
+            case .switchGender(let gender):
+                if gender == .male {
+                    state.selectedGender = .male
+                } else {
+                    state.selectedGender = .female
+                }
+                return .none
+                
+            case .switchTab(let gender):
                 state.selectedGender = .male
-            } else {
-                state.selectedGender = .female
+                return .none
+                
+            case .swotchState(let data):
+                state.showOption = data.showOption
+                state.selectedGender = data.selectedGender
+                return .none
             }
-            return .none
-
-        case let .switchGender(gender):
-            state.selectedGender = gender
-            return .none
-            
         }
     }
     
