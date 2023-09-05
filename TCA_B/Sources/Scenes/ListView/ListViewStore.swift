@@ -24,6 +24,8 @@ public struct ListViewStore: Reducer {
         var femaleRefreshLoading: Bool = false
         var isLoadingNextPageMale: Bool = false
         var isLoadingNextPageFemale: Bool = false
+        
+        var detailModel: ResultModel? = nil
     }
     
     public enum Action: Equatable {
@@ -37,11 +39,37 @@ public struct ListViewStore: Reducer {
         case addMale(TaskResult<[ResultModel]>)
         case moreFemale
         case addFemale(TaskResult<[ResultModel]>)
+        
+        // TEST
+        case initTest
+        case refreshModelData(genderType: Gender)
+        case clickProfile(model: ResultModel)
     }
     
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .initTest:
+                return .run { send in
+                    await send(.getUser(viewType: .male))
+                    await send(.getUser(viewType: .female))
+                }
+                
+            case .clickProfile(let model):
+                state.detailModel = model
+                return .none
+                
+            case .refreshModelData(let gender):
+                if gender == .male {
+                    return .run { send in
+                        await send(.getUser(viewType: .male))
+                    }
+                } else {
+                    return .run { send in
+                        await send(.getUser(viewType: .female))
+                    }
+                }
+                
             case .clickMale:
                 return .run { send in
                     await send(.getUser(viewType: .male))
