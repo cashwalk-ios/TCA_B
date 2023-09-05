@@ -10,13 +10,23 @@ import ComposableArchitecture
 
 struct DetailView: View {
     
+    var person: ResultModel? = nil
+    
+    init(person: ResultModel?) {
+        self.person = person
+    }
+    
     var body: some View {
-        Text("asdasd")
+        Text(person?.cell ?? "")
+        Text(person?.email ?? "")
+        Text(person?.gender ?? "")
+        Text(person?.phone ?? "")
+        Text(person?.name.title ?? "")
     }
 }
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailView()
+        DetailView(person: nil)
     }
 }

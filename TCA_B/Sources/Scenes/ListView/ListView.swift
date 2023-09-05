@@ -9,10 +9,10 @@ import SwiftUI
 import ComposableArchitecture
 
 struct ListView: View {
-    let store: StoreOf<ListViewStore>
-    var showOption: ShowOption = .second
     @State private var showAlert = false
     @State private var selectedPerson = ""
+    let store: StoreOf<ListViewStore>
+    var showOption: ShowOption = .second
     var gender: Gender = .male
      
     public init(store: StoreOf<ListViewStore>, showOption: ShowOption, gender: Gender) {
@@ -33,25 +33,28 @@ struct ListView: View {
                     LazyVGrid(columns: columns, spacing: 20) {
                         if gender == .male {
                             ForEach(viewStore.males, id: \.login.uuid) { person in
-                                VStack(alignment: .leading) {
-                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                        .frame(minHeight: 200, maxHeight: 200)
-                                        .aspectRatio(contentMode: .fill)
-                                        .cornerRadius(20)
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(person.name.title)
-                                            .font(.title)
-                                            .lineLimit(1)
-                                        Text(person.location.country)
-                                            .font(.body)
-                                            .lineLimit(1)
-                                        Text(verbatim: person.email)
-                                            .font(.body)
-                                            .lineLimit(1)
+                                NavigationLink(destination: DetailView(person: person)) {
+                                    VStack(alignment: .leading) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                            .frame(minHeight: 200, maxHeight: 200)
+                                            .aspectRatio(contentMode: .fill)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
                                     }
                                 }
                                 .onTapGesture {
                                     print("Clicked \(person)")
+                                    viewStore.send(.clickProfile(model: person))
                                 }
                                 .onLongPressGesture {
                                     if viewStore.males.firstIndex(where: { $0 == person }) != nil {
