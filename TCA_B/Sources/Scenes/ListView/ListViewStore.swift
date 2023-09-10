@@ -44,6 +44,8 @@ public struct ListViewStore: Reducer {
         case initTest
         case refreshModelData(genderType: Gender)
         case clickProfile(model: ResultModel)
+        
+        case deleteRow(Gender, Int)
     }
     
     public var body: some Reducer<State, Action> {
@@ -130,6 +132,13 @@ public struct ListViewStore: Reducer {
             case .addFemale(.success(let list)):
                 state.females += list
                 state.femaleCount += 1
+                return .none
+            case .deleteRow(let gender, let row):
+                if gender == .male {
+                    state.males.remove(at: row)
+                } else {
+                    state.females.remove(at: row)
+                }
                 return .none
             default:
                 return .none
