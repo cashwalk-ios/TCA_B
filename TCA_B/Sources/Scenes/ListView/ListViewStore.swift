@@ -25,6 +25,7 @@ public struct ListViewStore: Reducer {
         var isLoadingNextPageMale: Bool = false
         var isLoadingNextPageFemale: Bool = false
         
+        var isInit: Bool = false
         var detailModel: ResultModel? = nil
     }
     
@@ -50,6 +51,7 @@ public struct ListViewStore: Reducer {
         Reduce { state, action in
             switch action {
             case .initTest:
+                state.isInit = true
                 return .run { send in
                     await send(.getUser(viewType: .male))
                     await send(.getUser(viewType: .female))

@@ -52,51 +52,58 @@ struct ListView: View {
                                         }
                                     }
                                 }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
-                                    viewStore.send(.clickProfile(model: person))
-                                }
-                                .onLongPressGesture {
-                                    if viewStore.males.firstIndex(where: { $0 == person }) != nil {
-                                        selectedPerson = person.name.last
-                                        showAlert = true
+                                .simultaneousGesture(LongPressGesture(minimumDuration: 1.5)
+                                    .onEnded { isLongPressing in
+                                        if isLongPressing {
+                                            print("Long Pressed!")
+                                        } else {
+                                            print("Tapped!")
+                                        }
                                     }
-                                }
+                                )
                                 .alert(isPresented: $showAlert) {
                                     Alert(
                                         title: Text(""),
                                         message: Text("\(selectedPerson)를 삭제할까요?"),
                                         primaryButton: .destructive(Text("삭제")) {
                                             if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                // viewStore.males.remove(at: index)
+//                                                 viewStore.males.remove(at: index)
                                                 // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
                                             }
                                         },
                                         secondaryButton: .cancel(Text("취소"))
                                     )
                                 }
+                                .onAppear {
+                                    print("male Count: ", viewStore.maleCount)
+                                    print("female Count: ", viewStore.femaleCount)
+                                    
+                                }
                             }
                         } else {
                             ForEach(viewStore.females,id: \.login.uuid) { person in
-                                VStack(alignment: .leading) {
-                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                        .frame(minHeight: 200, maxHeight: 200)
-                                        .aspectRatio(contentMode: .fill)
-                                        .cornerRadius(20)
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(person.name.title)
-                                            .font(.title)
-                                            .lineLimit(1)
-                                        Text(person.location.country)
-                                            .font(.body)
-                                            .lineLimit(1)
-                                        Text(verbatim: person.email)
-                                            .font(.body)
-                                            .lineLimit(1)
+                                NavigationLink(destination: DetailView(person: person)) {
+                                    VStack(alignment: .leading) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                            .frame(minHeight: 200, maxHeight: 200)
+                                            .aspectRatio(contentMode: .fill)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
                                     }
                                 }
                                 .onTapGesture {
                                     print("Clicked \(person)")
+                                    viewStore.send(.clickProfile(model: person))
                                 }
                                 .onLongPressGesture {
                                     if viewStore.females.firstIndex(where: { $0 == person }) != nil {
@@ -137,50 +144,56 @@ struct ListView: View {
                     LazyVGrid(columns: columns, spacing: 20) {
                         if gender == .male {
                             ForEach(viewStore.males, id: \.login.uuid) { person in
-                                HStack(alignment: .top) {
-                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                        .frame(minHeight: 200, maxHeight: 200)
-                                        .aspectRatio(contentMode: .fill)
-                                        .cornerRadius(20)
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(person.name.title)
-                                            .font(.title)
-                                            .lineLimit(1)
-                                        Text(person.location.country)
-                                            .font(.body)
-                                            .lineLimit(1)
-                                        Text(verbatim: person.email)
-                                            .font(.body)
-                                            .lineLimit(1)
+                                NavigationLink(destination: DetailView(person: person)) {
+                                    HStack(alignment: .top) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                            .frame(minHeight: 200, maxHeight: 200)
+                                            .aspectRatio(contentMode: .fill)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
+                                        Spacer()
                                     }
-                                    Spacer()
                                 }
                                 .onTapGesture {
                                     print("Clicked \(person)")
+                                    viewStore.send(.clickProfile(model: person))
                                 }
                             }
                         } else {
                             ForEach(viewStore.females, id: \.login.uuid) { person in
-                                HStack(alignment: .top) {
-                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                        .frame(minHeight: 200, maxHeight: 200)
-                                        .aspectRatio(contentMode: .fill)
-                                        .cornerRadius(20)
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(person.name.title)
-                                            .font(.title)
-                                            .lineLimit(1)
-                                        Text(person.location.country)
-                                            .font(.body)
-                                            .lineLimit(1)
-                                        Text(verbatim: person.email)
-                                            .font(.body)
-                                            .lineLimit(1)
+                                NavigationLink(destination: DetailView(person: person)) {
+                                    HStack(alignment: .top) {
+                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                            .frame(minHeight: 200, maxHeight: 200)
+                                            .aspectRatio(contentMode: .fill)
+                                            .cornerRadius(20)
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text(person.name.title)
+                                                .font(.title)
+                                                .lineLimit(1)
+                                            Text(person.location.country)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                            Text(verbatim: person.email)
+                                                .font(.body)
+                                                .lineLimit(1)
+                                        }
+                                        Spacer()
                                     }
-                                    Spacer()
                                 }
                                 .onTapGesture {
                                     print("Clicked \(person)")
+                                    viewStore.send(.clickProfile(model: person))
                                 }
                             }
                         }
