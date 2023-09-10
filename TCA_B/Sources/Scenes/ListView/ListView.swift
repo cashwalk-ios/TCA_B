@@ -52,15 +52,16 @@ struct ListView: View {
                                         }
                                     }
                                 }
-                                .simultaneousGesture(LongPressGesture(minimumDuration: 1.5)
-                                    .onEnded { isLongPressing in
-                                        if isLongPressing {
-                                            print("Long Pressed!")
-                                        } else {
-                                            print("Tapped!")
-                                        }
+                                .onTapGesture {
+                                    print("Clicked \(person)")
+                                    viewStore.send(.clickProfile(model: person))
+                                }
+                                .onLongPressGesture {
+                                    if viewStore.males.firstIndex(where: { $0 == person }) != nil {
+                                        selectedPerson = person.name.last
+                                        showAlert = true
                                     }
-                                )
+                                }
                                 .alert(isPresented: $showAlert) {
                                     Alert(
                                         title: Text(""),
