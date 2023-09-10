@@ -22,7 +22,7 @@ struct ListView: View {
     }
     
     var body: some View {
-        WithViewStore(self.store, observe: {$0}) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             if showOption == .second {
                 let columns = [
                     GridItem(.flexible(), spacing: 15),
@@ -68,8 +68,7 @@ struct ListView: View {
                                         message: Text("\(selectedPerson)를 삭제할까요?"),
                                         primaryButton: .destructive(Text("삭제")) {
                                             if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                // viewStore.males.remove(at: index)
-                                                // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
+                                                viewStore.send(.deleteRow(.male, index))
                                             }
                                         },
                                         secondaryButton: .cancel(Text("취소"))
@@ -110,8 +109,7 @@ struct ListView: View {
                                         message: Text("\(selectedPerson)를 삭제할까요?"),
                                         primaryButton: .destructive(Text("삭제")) {
                                             if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                // viewStore.males.remove(at: index)
-                                                // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
+                                                viewStore.send(.deleteRow(.female, index))
                                             }
                                         },
                                         secondaryButton: .cancel(Text("취소"))
@@ -158,6 +156,24 @@ struct ListView: View {
                                 .onTapGesture {
                                     print("Clicked \(person)")
                                 }
+                                .onLongPressGesture {
+                                    if viewStore.males.firstIndex(where: { $0 == person }) != nil {
+                                        selectedPerson = person.name.last
+                                        showAlert = true
+                                    }
+                                }
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text(""),
+                                        message: Text("\(selectedPerson)를 삭제할까요?"),
+                                        primaryButton: .destructive(Text("삭제")) {
+                                            if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                                viewStore.send(.deleteRow(.male, index))
+                                            }
+                                        },
+                                        secondaryButton: .cancel(Text("취소"))
+                                    )
+                                }
                             }
                         } else {
                             ForEach(viewStore.females, id: \.login.uuid) { person in
@@ -181,6 +197,24 @@ struct ListView: View {
                                 }
                                 .onTapGesture {
                                     print("Clicked \(person)")
+                                }
+                                .onLongPressGesture {
+                                    if viewStore.females.firstIndex(where: { $0 == person }) != nil {
+                                        selectedPerson = person.name.last
+                                        showAlert = true
+                                    }
+                                }
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text(""),
+                                        message: Text("\(selectedPerson)를 삭제할까요?"),
+                                        primaryButton: .destructive(Text("삭제")) {
+                                            if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                                viewStore.send(.deleteRow(.female, index))
+                                            }
+                                        },
+                                        secondaryButton: .cancel(Text("취소"))
+                                    )
                                 }
                             }
                         }
