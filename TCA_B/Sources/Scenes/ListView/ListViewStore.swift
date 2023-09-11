@@ -40,11 +40,8 @@ public struct ListViewStore: Reducer {
         case addMale(TaskResult<[ResultModel]>)
         case moreFemale
         case addFemale(TaskResult<[ResultModel]>)
-        
-        // TEST
-        case initTest
+        case initData
         case refreshModelData(genderType: Gender)
-        case clickProfile(model: ResultModel)
         
         case deleteRow(Gender, Int)
     }
@@ -52,16 +49,12 @@ public struct ListViewStore: Reducer {
     public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .initTest:
+            case .initData:
                 state.isInit = true
                 return .run { send in
                     await send(.getUser(viewType: .male))
                     await send(.getUser(viewType: .female))
                 }
-                
-            case .clickProfile(let model):
-                state.detailModel = model
-                return .none
                 
             case .refreshModelData(let gender):
                 if gender == .male {

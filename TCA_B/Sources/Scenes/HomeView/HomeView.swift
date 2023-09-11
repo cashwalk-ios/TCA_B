@@ -62,7 +62,7 @@ struct HomeView: View {
                     .onAppear {
                         listStore.withState { state in
                             if state.isInit == false {
-                                self.listStore.send(.initTest)
+                                self.listStore.send(.initData)
                             }
                         }
                     }
