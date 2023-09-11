@@ -76,9 +76,9 @@ struct ListView: View {
                                     )
                                 }
                                 .onAppear {
-                                    print("male Count: ", viewStore.maleCount)
-                                    print("female Count: ", viewStore.femaleCount)
-                                    
+                                    if person.name == viewStore.males.last?.name {
+                                        viewStore.send(.moreMale)
+                                    }
                                 }
                             }
                         } else {
@@ -125,9 +125,13 @@ struct ListView: View {
                                         secondaryButton: .cancel(Text("취소"))
                                     )
                                 }
+                                .onAppear {
+                                    if person.name == viewStore.females.last?.name {
+                                        viewStore.send(.moreFemale)
+                                    }
+                                }
                             }
                         }
-                        
                     }
                 }
                 .refreshable {
