@@ -75,6 +75,11 @@ struct ListView: View {
                                         secondaryButton: .cancel(Text("취소"))
                                     )
                                 }
+                                .onAppear {
+                                    if person.name == viewStore.males.last?.name {
+                                        viewStore.send(.moreMale)
+                                    }
+                                }
                             }
                         } else {
                             ForEach(viewStore.females,id: \.login.uuid) { person in
@@ -119,6 +124,11 @@ struct ListView: View {
                                         },
                                         secondaryButton: .cancel(Text("취소"))
                                     )
+                                }
+                                .onAppear {
+                                    if person.name == viewStore.females.last?.name {
+                                        viewStore.send(.moreFemale)
+                                    }
                                 }
                             }
                         }
@@ -183,6 +193,11 @@ struct ListView: View {
                                         secondaryButton: .cancel(Text("취소"))
                                     )
                                 }
+                                .onAppear {
+                                    if person.name == viewStore.males.last?.name {
+                                        viewStore.send(.moreMale)
+                                    }
+                                }
                             }
                         } else {
                             ForEach(viewStore.females, id: \.login.uuid) { person in
@@ -228,6 +243,11 @@ struct ListView: View {
                                         },
                                         secondaryButton: .cancel(Text("취소"))
                                     )
+                                }
+                                .onAppear {
+                                    if person.name == viewStore.females.last?.name {
+                                        viewStore.send(.moreFemale)
+                                    }
                                 }
                             }
                         }
