@@ -23,7 +23,6 @@
 		47F024D02A8213D90058B5F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47F024CF2A8213D90058B5F4 /* Assets.xcassets */; };
 		47F024D32A8213D90058B5F4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47F024D22A8213D90058B5F4 /* Preview Assets.xcassets */; };
 		8688F9902AA3511E008D5BEC /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8688F98F2AA3511E008D5BEC /* DetailView.swift */; };
-		8688F9922AA35124008D5BEC /* DetailViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8688F9912AA35124008D5BEC /* DetailViewStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +40,6 @@
 		47F024CF2A8213D90058B5F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47F024D22A8213D90058B5F4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8688F98F2AA3511E008D5BEC /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		8688F9912AA35124008D5BEC /* DetailViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,7 +176,6 @@
 			isa = PBXGroup;
 			children = (
 				8688F98F2AA3511E008D5BEC /* DetailView.swift */,
-				8688F9912AA35124008D5BEC /* DetailViewStore.swift */,
 			);
 			path = DetailView;
 			sourceTree = "<group>";
@@ -269,7 +266,6 @@
 				475B13CE2A9D8C1D00C624DF /* AsyncImage.swift in Sources */,
 				8688F9902AA3511E008D5BEC /* DetailView.swift in Sources */,
 				471FC85A2A97491300C076EA /* Person.swift in Sources */,
-				8688F9922AA35124008D5BEC /* DetailViewStore.swift in Sources */,
 				471FC85D2A9B5AFD00C076EA /* API.swift in Sources */,
 				471FC8682A9B96DA00C076EA /* APIDependencies.swift in Sources */,
 				47F024CC2A8213D70058B5F4 /* TCA_BApp.swift in Sources */,
