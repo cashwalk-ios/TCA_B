@@ -11,17 +11,25 @@ import ComposableArchitecture
 struct DetailView: View {
     
     var person: ResultModel? = nil
-    
+    @State private var scale: CGFloat = 1.0
     init(person: ResultModel?) {
-        self.person = person
+      self.person = person
     }
-    
     var body: some View {
-        Text(person?.cell ?? "")
-        Text(person?.email ?? "")
-        Text(person?.gender ?? "")
-        Text(person?.phone ?? "")
-        Text(person?.name.title ?? "")
+        if let picture = person?.picture.large {
+            AsyncImage(url: URL(string: picture)!, placeholder: { Text("Loading ...") })
+                .environment(\.imageCache, TemporaryImageCache())
+                .frame(maxWidth:.infinity, maxHeight: .infinity)
+                .scaledToFit()
+                .scaleEffect(scale)
+                .gesture(
+                    MagnificationGesture()
+                        .onChanged{ value in
+                let currAmount = value - 1
+                scale = 1 + currAmount
+              }
+          )
+      }
     }
 }
 
