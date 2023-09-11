@@ -22,6 +22,7 @@
 		47F024CE2A8213D70058B5F4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F024CD2A8213D70058B5F4 /* HomeView.swift */; };
 		47F024D02A8213D90058B5F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47F024CF2A8213D90058B5F4 /* Assets.xcassets */; };
 		47F024D32A8213D90058B5F4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47F024D22A8213D90058B5F4 /* Preview Assets.xcassets */; };
+		86094B9B2AAEBF4E008AC7E4 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86094B9A2AAEBF4E008AC7E4 /* ListViewCell.swift */; };
 		8688F9902AA3511E008D5BEC /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8688F98F2AA3511E008D5BEC /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		47F024CD2A8213D70058B5F4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		47F024CF2A8213D90058B5F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47F024D22A8213D90058B5F4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		86094B9A2AAEBF4E008AC7E4 /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		8688F98F2AA3511E008D5BEC /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 			children = (
 				471FC8562A9748C600C076EA /* ListView.swift */,
 				471FC85E2A9B5FBC00C076EA /* ListViewStore.swift */,
+				86094B9A2AAEBF4E008AC7E4 /* ListViewCell.swift */,
 			);
 			path = ListView;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				0FF7C71C2A91EF3300BFC33D /* GradationView.swift in Sources */,
 				471FC8572A9748C600C076EA /* ListView.swift in Sources */,
 				47F024CE2A8213D70058B5F4 /* HomeView.swift in Sources */,
+				86094B9B2AAEBF4E008AC7E4 /* ListViewCell.swift in Sources */,
 				475B13CE2A9D8C1D00C624DF /* AsyncImage.swift in Sources */,
 				8688F9902AA3511E008D5BEC /* DetailView.swift in Sources */,
 				471FC85A2A97491300C076EA /* Person.swift in Sources */,

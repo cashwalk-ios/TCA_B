@@ -9,12 +9,13 @@ import SwiftUI
 import ComposableArchitecture
 
 struct DetailView: View {
-    
     var person: ResultModel? = nil
     @State private var scale: CGFloat = 1.0
+    
     init(person: ResultModel?) {
       self.person = person
     }
+    
     var body: some View {
         if let picture = person?.picture.large {
             AsyncImage(url: URL(string: picture)!, placeholder: { Text("Loading ...") })
