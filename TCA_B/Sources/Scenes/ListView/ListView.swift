@@ -83,6 +83,19 @@ struct ListView: View {
                                         viewStore.send(.moreFemale)
                                     }
                                 }
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text(""),
+                                        message: Text("\(selectedPerson)를 삭제할까요?"),
+                                        primaryButton: .destructive(Text("삭제")) {
+                                            if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                                // viewStore.males.remove(at: index)
+                                                // TODO: viewStore의 해당 index의 남자 데이터 삭제하는 Reduce 추가
+                                            }
+                                        },
+                                        secondaryButton: .cancel(Text("취소"))
+                                    )
+                                }
                             }
                         }
                     }
@@ -118,7 +131,6 @@ struct ListView: View {
                                             .font(.body)
                                             .lineLimit(1)
                                     }
-                                    Spacer()
                                 }
                             }
                             .onTapGesture {
@@ -150,6 +162,9 @@ struct ListView: View {
                                     } else {
                                         viewStore.send(.moreFemale)
                                     }
+                                }
+                                .onTapGesture {
+                                    print("Clicked \(person)")
                                 }
                             }
                         }

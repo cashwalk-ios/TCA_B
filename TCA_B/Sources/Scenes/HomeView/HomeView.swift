@@ -60,7 +60,11 @@ struct HomeView: View {
                     })
                     .padding(.bottom, 30)
                     .onAppear {
-                        self.listStore.send(.initTest)
+                        listStore.withState { state in
+                            if state.isInit == false {
+                                self.listStore.send(.initTest)
+                            }
+                        }
                     }
                 }
                 .navigationBarTitle("랜덤 프로필", displayMode: .inline)
@@ -75,7 +79,6 @@ struct ContentView_Previews: PreviewProvider {
             HomeViewStore()
         }), listStore: Store(initialState: ListViewStore.State(), reducer: {
             ListViewStore()
-        })
-                 )
+        }))
     }
 }
