@@ -23,6 +23,7 @@ struct ListView: View {
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
+            let viewStoreGender = gender == .male ? viewStore.males : viewStore.females
             if showOption == .second {
                 let columns = [
                     GridItem(.flexible(), spacing: 15),
@@ -31,108 +32,59 @@ struct ListView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        if gender == .male {
-                            ForEach(viewStore.males, id: \.login.uuid) { person in
-                                NavigationLink(destination: DetailView(person: person)) {
-                                    VStack(alignment: .leading) {
-                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                            .environment(\.imageCache, TemporaryImageCache())
-                                            .frame(minHeight: 200, maxHeight: 200)
-                                            .aspectRatio(contentMode: .fill)
-                                            .cornerRadius(20)
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text(person.name.title)
-                                                .font(.title)
-                                                .lineLimit(1)
-                                            Text(person.location.country)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                            Text(verbatim: person.email)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                        }
-                                    }
-                                }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
-                                    viewStore.send(.clickProfile(model: person))
-                                }
-                                .onLongPressGesture {
-                                    if viewStore.males.firstIndex(where: { $0 == person }) != nil {
-                                        selectedPerson = person.name.last
-                                        showAlert = true
-                                    }
-                                }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text(""),
-                                        message: Text("\(selectedPerson)를 삭제할까요?"),
-                                        primaryButton: .destructive(Text("삭제")) {
-                                            if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                viewStore.send(.deleteRow(.male, index))
-                                            }
-                                        },
-                                        secondaryButton: .cancel(Text("취소"))
-                                    )
-                                }
-                                .onAppear {
-                                    if person.name == viewStore.males.last?.name {
-                                        viewStore.send(.moreMale)
+                        ForEach(viewStoreGender, id: \.login.uuid) { person in
+                            NavigationLink(destination: DetailView(person: person)) {
+                                VStack(alignment: .leading) {
+                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                        .environment(\.imageCache, TemporaryImageCache())
+                                        .frame(minHeight: 200, maxHeight: 200)
+                                        .aspectRatio(contentMode: .fill)
+                                        .cornerRadius(20)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(person.name.title)
+                                            .font(.title)
+                                            .lineLimit(1)
+                                        Text(person.location.country)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                        Text(verbatim: person.email)
+                                            .font(.body)
+                                            .lineLimit(1)
                                     }
                                 }
                             }
-                        } else {
-                            ForEach(viewStore.females,id: \.login.uuid) { person in
-                                NavigationLink(destination: DetailView(person: person)) {
-                                    VStack(alignment: .leading) {
-                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                            .environment(\.imageCache, TemporaryImageCache())
-                                            .frame(minHeight: 200, maxHeight: 200)
-                                            .aspectRatio(contentMode: .fill)
-                                            .cornerRadius(20)
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text(person.name.title)
-                                                .font(.title)
-                                                .lineLimit(1)
-                                            Text(person.location.country)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                            Text(verbatim: person.email)
-                                                .font(.body)
-                                                .lineLimit(1)
+                            .onTapGesture {
+                                print("Clicked \(person)")
+                                viewStore.send(.clickProfile(model: person))
+                            }
+                            .onLongPressGesture {
+                                if viewStoreGender.firstIndex(where: { $0 == person }) != nil {
+                                    selectedPerson = person.name.last
+                                    showAlert = true
+                                }
+                            }
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text(""),
+                                    message: Text("\(selectedPerson)를 삭제할까요?"),
+                                    primaryButton: .destructive(Text("삭제")) {
+                                        if let index = viewStoreGender.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                            viewStore.send(.deleteRow(gender, index))
                                         }
-                                    }
-                                }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
-                                    viewStore.send(.clickProfile(model: person))
-                                }
-                                .onLongPressGesture {
-                                    if viewStore.females.firstIndex(where: { $0 == person }) != nil {
-                                        selectedPerson = person.name.last
-                                        showAlert = true
-                                    }
-                                }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text(""),
-                                        message: Text("\(selectedPerson)를 삭제할까요?"),
-                                        primaryButton: .destructive(Text("삭제")) {
-                                            if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                viewStore.send(.deleteRow(.female, index))
-                                            }
-                                        },
-                                        secondaryButton: .cancel(Text("취소"))
-                                    )
-                                }
-                                .onAppear {
-                                    if person.name == viewStore.females.last?.name {
+                                    },
+                                    secondaryButton: .cancel(Text("취소"))
+                                )
+                            }
+                            .onAppear {
+                                if person.name == viewStoreGender.last?.name {
+                                    if gender == .male {
+                                        viewStore.send(.moreMale)
+                                    } else {
                                         viewStore.send(.moreFemale)
                                     }
                                 }
                             }
                         }
-                        
                     }
                 }
                 .refreshable {
@@ -145,107 +97,57 @@ struct ListView: View {
                 let columns = [
                     GridItem(.flexible())
                 ]
-                
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        if gender == .male {
-                            ForEach(viewStore.males, id: \.login.uuid) { person in
-                                NavigationLink(destination: DetailView(person: person)) {
-                                    HStack(alignment: .top) {
-                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                            .environment(\.imageCache, TemporaryImageCache())
-                                            .frame(minHeight: 200, maxHeight: 200)
-                                            .aspectRatio(contentMode: .fill)
-                                            .cornerRadius(20)
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            Text(person.name.title)
-                                                .font(.title)
-                                                .lineLimit(1)
-                                            Text(person.location.country)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                            Text(verbatim: person.email)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                        }
-                                        Spacer()
+                        ForEach(viewStoreGender, id: \.login.uuid) { person in
+                            NavigationLink(destination: DetailView(person: person)) {
+                                HStack(alignment: .top) {
+                                    AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
+                                        .environment(\.imageCache, TemporaryImageCache())
+                                        .frame(minHeight: 200, maxHeight: 200)
+                                        .aspectRatio(contentMode: .fill)
+                                        .cornerRadius(20)
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(person.name.title)
+                                            .font(.title)
+                                            .lineLimit(1)
+                                        Text(person.location.country)
+                                            .font(.body)
+                                            .lineLimit(1)
+                                        Text(verbatim: person.email)
+                                            .font(.body)
+                                            .lineLimit(1)
                                     }
-                                }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
-                                    viewStore.send(.clickProfile(model: person))
-                                }
-                                .onLongPressGesture {
-                                    if viewStore.males.firstIndex(where: { $0 == person }) != nil {
-                                        selectedPerson = person.name.last
-                                        showAlert = true
-                                    }
-                                }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text(""),
-                                        message: Text("\(selectedPerson)를 삭제할까요?"),
-                                        primaryButton: .destructive(Text("삭제")) {
-                                            if let index = viewStore.males.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                viewStore.send(.deleteRow(.male, index))
-                                            }
-                                        },
-                                        secondaryButton: .cancel(Text("취소"))
-                                    )
-                                }
-                                .onAppear {
-                                    if person.name == viewStore.males.last?.name {
-                                        viewStore.send(.moreMale)
-                                    }
+                                    Spacer()
                                 }
                             }
-                        } else {
-                            ForEach(viewStore.females, id: \.login.uuid) { person in
-                                NavigationLink(destination: DetailView(person: person)) {
-                                    HStack(alignment: .top) {
-                                        AsyncImage(url: URL(string: person.picture.medium)!, placeholder: { Text("Loading ...") })
-                                            .environment(\.imageCache, TemporaryImageCache())
-                                            .frame(minHeight: 200, maxHeight: 200)
-                                            .aspectRatio(contentMode: .fill)
-                                            .cornerRadius(20)
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            Text(person.name.title)
-                                                .font(.title)
-                                                .lineLimit(1)
-                                            Text(person.location.country)
-                                                .font(.body)
-                                                .lineLimit(1)
-                                            Text(verbatim: person.email)
-                                                .font(.body)
-                                                .lineLimit(1)
+                            .onTapGesture {
+                                print("Clicked \(person)")
+                                viewStore.send(.clickProfile(model: person))
+                            }
+                            .onLongPressGesture {
+                                if viewStoreGender.firstIndex(where: { $0 == person }) != nil {
+                                    selectedPerson = person.name.last
+                                    showAlert = true
+                                }
+                            }
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text(""),
+                                    message: Text("\(selectedPerson)를 삭제할까요?"),
+                                    primaryButton: .destructive(Text("삭제")) {
+                                        if let index = viewStoreGender.firstIndex(where: { $0.name.last == selectedPerson }) {
+                                            viewStore.send(.deleteRow(gender, index))
                                         }
-                                        Spacer()
-                                    }
-                                }
-                                .onTapGesture {
-                                    print("Clicked \(person)")
-                                    viewStore.send(.clickProfile(model: person))
-                                }
-                                .onLongPressGesture {
-                                    if viewStore.females.firstIndex(where: { $0 == person }) != nil {
-                                        selectedPerson = person.name.last
-                                        showAlert = true
-                                    }
-                                }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text(""),
-                                        message: Text("\(selectedPerson)를 삭제할까요?"),
-                                        primaryButton: .destructive(Text("삭제")) {
-                                            if let index = viewStore.females.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                                viewStore.send(.deleteRow(.female, index))
-                                            }
-                                        },
-                                        secondaryButton: .cancel(Text("취소"))
-                                    )
-                                }
-                                .onAppear {
-                                    if person.name == viewStore.females.last?.name {
+                                    },
+                                    secondaryButton: .cancel(Text("취소"))
+                                )
+                            }
+                            .onAppear {
+                                if person.name == viewStoreGender.last?.name {
+                                    if gender == .male {
+                                        viewStore.send(.moreMale)
+                                    } else {
                                         viewStore.send(.moreFemale)
                                     }
                                 }
