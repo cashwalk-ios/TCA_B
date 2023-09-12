@@ -10,11 +10,12 @@ import ComposableArchitecture
 
 struct ListView: View {
     @State private var showAlert = false
-    @State private var selectedPerson = ""
+    @State private var isTapped = false
+    @State private var selectedPerson: ResultModel?
     let store: StoreOf<ListViewStore>
     var showOption: ShowOption = .second
     var gender: Gender = .male
-     
+    
     public init(store: StoreOf<ListViewStore>, showOption: ShowOption, gender: Gender) {
         self.store = store
         self.showOption = showOption
@@ -29,35 +30,43 @@ struct ListView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(viewStoreGender, id: \.login.uuid) { person in
-                        NavigationLink(destination: DetailView(person: person)) {
+                        NavigationLink(isActive: $isTapped) {
+                            if let selectedPerson {
+                                DetailView(person: selectedPerson)
+                            }
+                        } label: {
                             ListViewCell(showOption: showOption, person: person)
-                        }
-                        .onLongPressGesture {
-                            if viewStoreGender.firstIndex(where: { $0 == person }) != nil {
-                                selectedPerson = person.name.last
-                                showAlert = true
-                            }
-                        }
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text(""),
-                                message: Text("\(selectedPerson)를 삭제할까요?"),
-                                primaryButton: .destructive(Text("삭제")) {
-                                    if let index = viewStoreGender.firstIndex(where: { $0.name.last == selectedPerson }) {
-                                        viewStore.send(.deleteRow(gender, index))
-                                    }
-                                },
-                                secondaryButton: .cancel(Text("취소"))
-                            )
-                        }
-                        .onAppear {
-                            if person.login.uuid == viewStoreGender[viewStoreGender.count - 5].login.uuid {
-                                if gender == .male {
-                                    viewStore.send(.moreMale)
-                                } else {
-                                    viewStore.send(.moreFemale)
+                                .onTapGesture {
+                                    isTapped.toggle()
+                                    selectedPerson = person
                                 }
-                            }
+                                .onLongPressGesture {
+                                    if viewStoreGender.firstIndex(where: { $0 == person }) != nil {
+                                        selectedPerson = person
+                                        showAlert = true
+                                    }
+                                }
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text(""),
+                                        message: Text("\(selectedPerson?.name.last ?? "")를 삭제할까요?"),
+                                        primaryButton: .destructive(Text("삭제")) {
+                                            if let index = viewStoreGender.firstIndex(where: { $0.login.uuid == selectedPerson?.login.uuid }) {
+                                                viewStore.send(.deleteRow(gender, index))
+                                            }
+                                        },
+                                        secondaryButton: .cancel(Text("취소"))
+                                    )
+                                }
+                                .onAppear {
+                                    if person.login.uuid == viewStoreGender[viewStoreGender.count - 5].login.uuid {
+                                        if gender == .male {
+                                            viewStore.send(.moreMale)
+                                        } else {
+                                            viewStore.send(.moreFemale)
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
