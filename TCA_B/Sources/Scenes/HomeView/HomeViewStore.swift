@@ -23,7 +23,6 @@ struct HomeViewStore: Reducer {
     enum Action: Equatable {
         case showOptionTapped(ShowOption)
         case switchGender(Gender)
-        case switchTab(String)
     }
     
     public var body: some Reducer<State, Action> {
@@ -39,10 +38,6 @@ struct HomeViewStore: Reducer {
                 } else {
                     state.selectedGender = .female
                 }
-                return .none
-                
-            case .switchTab(let gender):
-                state.selectedGender = .male
                 return .none
             }
         }
