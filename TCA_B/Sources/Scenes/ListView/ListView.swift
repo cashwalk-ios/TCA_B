@@ -51,7 +51,7 @@ struct ListView: View {
                             )
                         }
                         .onAppear {
-                            if person.name == viewStoreGender.last?.name {
+                            if person.login.uuid == viewStoreGender[viewStoreGender.count - 5].login.uuid {
                                 if gender == .male {
                                     viewStore.send(.moreMale)
                                 } else {
